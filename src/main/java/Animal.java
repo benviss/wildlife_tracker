@@ -29,8 +29,9 @@ public class Animal {
 
   public void save() {
     try(Connection con = DB.sql2o.open()) {
-      this.id = (int) con.createQuery("INSERT INTO animals (species) VALUES (:species)", true)
+      this.id = (int) con.createQuery("INSERT INTO animals (species, endangered) VALUES (:species, :endangered)", true)
       .addParameter("species", this.species)
+      .addParameter("endangered", this.endangered)
       .executeUpdate()
       .getKey();
     }
@@ -46,6 +47,7 @@ public class Animal {
   public static Animal findById(int _id) {
     try(Connection con = DB.sql2o.open()) {
       return con.createQuery("SELECT * FROM animals where id=:id")
+      .throwOnMappingFailure(false)
       .addParameter("id", _id)
       .executeAndFetchFirst(Animal.class);
     }
@@ -63,21 +65,43 @@ public class Animal {
 
   public void addAnimalSighted(int _location_id, int _ranger_id) {
     try(Connection con = DB.sql2o.open()) {
-      con.createQuery("INSERT INTO animal_sightings (animal_id, location_id, ranger_id, endangered) VALUES (:animal_id, :location_id, :ranger_id, :endangered)")
+      con.createQuery("INSERT INTO animal_sightings (animal_id, location_id, ranger_id) VALUES (:animal_id, :location_id, :ranger_id)")
       .addParameter("animal_id", this.id)
       .addParameter("location_id", _location_id)
       .addParameter("ranger_id", _ranger_id)
-      .addParameter("endangered", this.endangered)
       .executeUpdate();
     }
   }
 
-  public static List<Integer> getAnimalIds(boolean _endangeredBool) {
+  public static List<Animal> getAnimalByEndangeredBoolean(boolean _endangeredBool) {
     try(Connection con = DB.sql2o.open()) {
-      return con.createQuery("SELECT animal_id FROM animal_sightings WHERE endangered=:endangered")
+      return con.createQuery("SELECT * FROM animals WHERE endangered=:endangered")
       .addParameter("endangered",_endangeredBool)
+      .executeAndFetch(Animal.class);
+    }
+  }
+
+  public static List<Integer> getAnimalSightingIds() {
+    try(Connection con = DB.sql2o.open()) {
+      return con.createQuery("SELECT animal_id FROM animal_sightings;")
       .executeAndFetch(Integer.class);
     }
+  }
+
+  public static List<Animal> getAnimalsFromAnimalIds(List<Integer> _animalIdList) {
+    List<Animal> animals = new ArrayList<>();
+    try(Connection con = DB.sql2o.open()) {
+      for (int animalId : _animalIdList) {
+        Animal animal = con.createQuery("SELECT * FROM animals WHERE id=:id AND endangered=:endangered")
+        .throwOnMappingFailure(false)
+        .addParameter("id", animalId)
+        .addParameter("endangered", false)
+        .executeAndFetchFirst(Animal.class);
+
+        animals.add(animal);
+      }
+    }
+    return animals;
   }
 
 }

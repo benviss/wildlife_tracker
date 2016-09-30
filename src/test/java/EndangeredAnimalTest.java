@@ -43,10 +43,18 @@ public class EndangeredAnimalTest {
   }
 
   @Test
-  public void addAnimalSighted_SavesCorrectInfoAndBooleanReturnsTrue_true() {
-    EndangeredAnimal newEndangeredAnimal = new EndangeredAnimal("Deer, I give up", "Sick", 99);
+  public void getAnimalIds_ReturnsAllEndangeredAnimals_true() {
+    EndangeredAnimal newEndangeredAnimal = new EndangeredAnimal("Deer, I give up","Sick",99);
+    newEndangeredAnimal.save();
+
+    assertTrue(Animal.getAnimalByEndangeredBoolean(true).get(0).equals(newEndangeredAnimal));
+  }
+
+  @Test
+  public void addAnimalSighted_SavesAnimalSighting_true() {
+    EndangeredAnimal newEndangeredAnimal = new EndangeredAnimal("Deer, I give up", "SICK", 99);
     newEndangeredAnimal.save();
     newEndangeredAnimal.addAnimalSighted(1,2);
-    assertTrue(EndangeredAnimal.findById(EndangeredAnimal.getAnimalIds(true).get(0)).equals(newEndangeredAnimal));
+    assertTrue(EndangeredAnimal.getEndangeredAnimalsFromAnimalIds(Animal.getAnimalSightingIds()).get(0).equals(newEndangeredAnimal));
   }
 }

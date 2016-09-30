@@ -42,10 +42,18 @@ public class AnimalTest {
   }
 
   @Test
-  public void addAnimalSighted_SavesCorrectInfoAndBooleanStatusReturnsFalse_true() {
+  public void getAnimalIds_ReturnsAllUnEndangeredAnimals_true() {
+    Animal newAnimal = new Animal("Deer, I give up");
+    newAnimal.save();
+
+    assertTrue(Animal.getAnimalByEndangeredBoolean(false).get(0).equals(newAnimal));
+  }
+
+  @Test
+  public void addAnimalSighted_SavesAnimalSighting_true() {
     Animal newAnimal = new Animal("Deer, I give up");
     newAnimal.save();
     newAnimal.addAnimalSighted(1,2);
-    assertTrue(Animal.findById(Animal.getAnimalIds(false).get(0)).equals(newAnimal));
+    assertTrue(Animal.getAnimalsFromAnimalIds(Animal.getAnimalSightingIds()).get(0).equals(newAnimal));
   }
 }

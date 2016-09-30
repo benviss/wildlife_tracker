@@ -28,10 +28,11 @@ public class EndangeredAnimal extends Animal{
   @Override
   public void save() {
     try(Connection con = DB.sql2o.open()) {
-      this.id = (int) con.createQuery("INSERT INTO endangered_animals (species, health, age) VALUES (:species, :health, :age)", true)
+      this.id = (int) con.createQuery("INSERT INTO animals (species, health, age, endangered) VALUES (:species, :health, :age, :endangered)", true)
       .addParameter("species", this.species)
       .addParameter("health", this.health)
       .addParameter("age", this.age)
+      .addParameter("endangered", this.endangered)
       .executeUpdate()
       .getKey();
     }
@@ -39,14 +40,14 @@ public class EndangeredAnimal extends Animal{
 
   public static List<EndangeredAnimal> getAllEndangeredAnimals() {
     try(Connection con = DB.sql2o.open()) {
-      return con.createQuery("SELECT * FROM endangered_animals;")
+      return con.createQuery("SELECT * FROM animals;")
       .executeAndFetch(EndangeredAnimal.class);
     }
   }
 
   public static EndangeredAnimal findById(int _id) {
     try(Connection con = DB.sql2o.open()) {
-      return con.createQuery("SELECT * FROM endangered_animals where id=:id")
+      return con.createQuery("SELECT * FROM animals where id=:id")
       .addParameter("id", _id)
       .executeAndFetchFirst(EndangeredAnimal.class);
     }
@@ -60,6 +61,22 @@ public class EndangeredAnimal extends Animal{
       EndangeredAnimal animal = (EndangeredAnimal) testObj;
       return this.id == animal.getId() && this.species.equals(animal.getSpecies());
     }
+  }
+
+  public static List<EndangeredAnimal> getEndangeredAnimalsFromAnimalIds(List<Integer> _animalIdList) {
+    List<EndangeredAnimal> animals = new ArrayList<>();
+    try(Connection con = DB.sql2o.open()) {
+      for (int animalId : _animalIdList) {
+        EndangeredAnimal animal = con.createQuery("SELECT * FROM animals WHERE id=:id AND endangered=:endangered")
+        .throwOnMappingFailure(false)
+        .addParameter("id", animalId)
+        .addParameter("endangered", true)
+        .executeAndFetchFirst(EndangeredAnimal.class);
+
+        animals.add(animal);
+      }
+    }
+    return animals;
   }
 
 

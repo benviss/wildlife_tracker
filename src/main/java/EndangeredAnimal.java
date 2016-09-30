@@ -8,9 +8,9 @@ import org.sql2o.*;
 public class EndangeredAnimal extends Animal{
 
   private String health;
-  private int age;
+  private String age;
 
-  public EndangeredAnimal(String _species, String _health, int _age) {
+  public EndangeredAnimal(String _species, String _health, String _age) {
     super(_species);
     this.health = _health;
     this.age = _age;
@@ -21,7 +21,7 @@ public class EndangeredAnimal extends Animal{
     return this.health;
   }
 
-  public int getAge() {
+  public String getAge() {
     return this.age;
   }
 

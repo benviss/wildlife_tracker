@@ -7,8 +7,9 @@ import org.sql2o.*;
 
 public class Animal {
 
-  private int id;
-  private String species;
+  public int id;
+  public String species;
+  public boolean endangered = false;
 
   public Animal(String _species) {
     this.species = _species;
@@ -20,6 +21,10 @@ public class Animal {
 
   public String getSpecies() {
     return this.species;
+  }
+
+  public boolean getEndangeredBoolean() {
+    return this.endangered;
   }
 
   public void save() {

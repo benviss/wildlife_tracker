@@ -21,6 +21,13 @@ public class AnimalTest {
   }
 
   @Test
+  public void getEndageredBoolean_EndangeredShouldInstantiateAsFalse_False() {
+    Animal newAnimal = new Animal("Led Zeppelin; an eagle probably");
+    newAnimal.save();
+    assertFalse(newAnimal.getEndangeredBoolean());
+  }
+
+  @Test
   public void getAllAnimals_returnsAllAnimalsCorrectly_true() {
     Animal newAnimal = new Animal("White Stripes; definitely elephants");
     newAnimal.save();

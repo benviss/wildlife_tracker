@@ -61,5 +61,23 @@ public class Animal {
     }
   }
 
+  public void addAnimalSighted(int _location_id, int _ranger_id) {
+    try(Connection con = DB.sql2o.open()) {
+      con.createQuery("INSERT INTO animal_sightings (animal_id, location_id, ranger_id, endangered) VALUES (:animal_id, :location_id, :ranger_id, :endangered)")
+      .addParameter("animal_id", this.id)
+      .addParameter("location_id", _location_id)
+      .addParameter("ranger_id", _ranger_id)
+      .addParameter("endangered", this.endangered)
+      .executeUpdate();
+    }
+  }
+
+  public static List<Integer> getAnimalIds(boolean _endangeredBool) {
+    try(Connection con = DB.sql2o.open()) {
+      return con.createQuery("SELECT animal_id FROM animal_sightings WHERE endangered=:endangered")
+      .addParameter("endangered",_endangeredBool)
+      .executeAndFetch(Integer.class);
+    }
+  }
 
 }

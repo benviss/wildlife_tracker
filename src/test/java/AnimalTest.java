@@ -40,4 +40,12 @@ public class AnimalTest {
     newAnimal.save();
     assertTrue(Animal.findById(newAnimal.getId()).equals(newAnimal));
   }
+
+  @Test
+  public void addAnimalSighted_SavesCorrectInfoAndBooleanStatusReturnsFalse_true() {
+    Animal newAnimal = new Animal("Deer, I give up");
+    newAnimal.save();
+    newAnimal.addAnimalSighted(1,2);
+    assertTrue(Animal.findById(Animal.getAnimalIds(false).get(0)).equals(newAnimal));
+  }
 }

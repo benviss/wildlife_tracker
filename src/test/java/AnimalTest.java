@@ -19,4 +19,18 @@ public class AnimalTest {
     newAnimal.save();
     assertTrue(newAnimal.getId() > 0);
   }
+
+  @Test
+  public void getAllAnimals_returnsAllAnimalsCorrectly_true() {
+    Animal newAnimal = new Animal("White Stripes; definitely elephants");
+    newAnimal.save();
+    assertTrue(Animal.getAllAnimals().size() > 0);
+  }
+
+  @Test
+  public void findById_FindsCorrectAnimal_true() {
+    Animal newAnimal = new Animal("Deer, I give up");
+    newAnimal.save();
+    assertTrue(Animal.findById(newAnimal.getId()).equals(newAnimal));
+  }
 }

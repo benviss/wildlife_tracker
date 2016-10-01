@@ -1,0 +1,41 @@
+<form action="/sightings/new" method="post">
+  <select name="ranger">
+    #foreach($ranger in $rangers)
+    <option value="$ranger.getId()">$ranger.getName()</option>
+    #end
+    <option value="new-ranger">Add Ranger</option>
+  </select>
+  <br>
+  <br>
+  <input type="text" name="new-ranger-input" Placeholder="New Ranger" value="">
+  <br>
+  <br>
+  <select name="species">
+    #foreach($animal in $species)
+    <option value="$animal.getId()">$animal.getName()</option>
+    #end
+    <option value="new-species">Add Species</option>
+  </select>
+  <br>
+  <br>
+  <input type="text" name="new-species-input" Placeholder="New Species" value="">
+  <br>
+  <br>
+  <label for="endangered">Is This Species Endangered?</label><br>
+  <input type="radio" name="endangered" value="Yes">Yes<br>
+  <input type="radio" name="endangered" value="No">No
+  <br>
+  <br>
+  <select name="location">
+    #foreach($location in $locations)
+    <option value="$location.getId()">$location.getName()</option>
+    #end
+    <option value="new-location">Add Location</option>
+  </select>
+  <br>
+  <br>
+  <input type="text" name="new-location-input" Placeholder="New Location" value="">
+  <br>
+  <br>
+  <button type="submit" class="btn btn-success" name="button">Record Sighting</button>
+</form>

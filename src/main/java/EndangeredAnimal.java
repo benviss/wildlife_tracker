@@ -7,8 +7,8 @@ import org.sql2o.*;
 
 public class EndangeredAnimal extends Animal{
 
-  private String health;
-  private String age;
+  private final String health;
+  private final String age;
 
   public EndangeredAnimal(String _species, String _health, String _age) {
     super(_species);
@@ -40,7 +40,8 @@ public class EndangeredAnimal extends Animal{
 
   public static List<EndangeredAnimal> getAllEndangeredAnimals() {
     try(Connection con = DB.sql2o.open()) {
-      return con.createQuery("SELECT * FROM animals;")
+      return con.createQuery("SELECT * FROM animals WHERE endangered=:boolean;")
+      .addParameter("boolean", true)
       .executeAndFetch(EndangeredAnimal.class);
     }
   }

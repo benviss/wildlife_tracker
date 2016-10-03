@@ -1,10 +1,10 @@
-# _Hair Salon_
+# _WildLife Tracker_
 
 #### By _Ben Vissotzky_
 
 ## Description
 
-_A website admin page for a hair salon. Will let employees add stylists and clients for individual stylists. _
+_Simple website for Rangers to track wildlife they have found in the wild. _
 
 ## Setup/Installation Requirements
 
@@ -15,24 +15,17 @@ _A website admin page for a hair salon. Will let employees add stylists and clie
 - Download repository
 - Start Postgress Database
 - In PSQL:
-  - CREATE DATABASE hair_salon;
-  - \c hair_salon;
-  - CREATE TABLE clients (id serial primary key, name varchar, stylist_id int);
-  - CREATE TABLE stylists (id serial primary key, name varchar);
-  - CREATE DATABASE hair_salon WITH TEMPLATE hair_salon;
+  - CREATE DATABASE wildlife_tracker;
+  - \c wildlife_tracker;
+  - CREATE TABLE animals (id serial primary key, species varchar, endangered boolean, health varchar, age int);
+  - CREATE TABLE sightings (id serial primary key, animal_id int, location varchar, ranger varchar);
+  - CREATE DATABASE wildlife_tracker_test WITH TEMPLATE wildlife_tracker;
 
 
 ## BDD
-- Create new Stylist: "Jeremy"
-- Create new Client: "Bill"
-- Assign client to stylist: "Jeremy" stylist for "Bill"
-- Update information for Stylist: "Jeremy Rogers"
-- Update information for Client: "Billy Bob"
-- Delete clients: delete "Billy Bob"; "Client list empty"
-- Delete Stylist: delete "Jeremy Rogers", "Stylist list empty"
 
 ## GitHub link
-https://github.com/benviss/epic-java-postgres-hair_salon
+https://github.com/benviss/wildlife_tracker
 
 ## Licensing
 

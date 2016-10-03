@@ -1,18 +1,23 @@
+#if($errorMessage)
+<h5>***$errorMessage***</h5>
+#end
+<a href="/">Home</a>
 <form action="/sightings/new" method="post">
-  <select name="ranger">
+  <!-- <select name="ranger">
     #foreach($ranger in $rangers)
     <option value="$ranger.getId()">$ranger.getName()</option>
     #end
     <option value="new-ranger">Add Ranger</option>
-  </select>
+  </select> -->
   <br>
   <br>
-  <input type="text" name="new-ranger-input" Placeholder="New Ranger" value="">
+  <label for="ranger">Ranger Name: </label>
+  <input type="text" name="ranger" value="">
   <br>
   <br>
   <select name="species">
-    #foreach($animal in $species)
-    <option value="$animal.getId()">$animal.getName()</option>
+    #foreach($animal in $animals)
+    <option value="$animal.getSpecies()">$animal.getSpecies()</option>
     #end
     <option value="new-species">Add Species</option>
   </select>
@@ -22,19 +27,24 @@
   <br>
   <br>
   <label for="endangered">Is This Species Endangered?</label><br>
-  <input type="radio" name="endangered" value="Yes">Yes<br>
+  <input type="radio" name="endangered" value="Yes">Yes(If yes, please provide health and age below)<br>
   <input type="radio" name="endangered" value="No">No
   <br>
   <br>
-  <select name="location">
+  <input type="text" name="health" value="" Placeholder="Enter Health">
+  <input type="text" name="age" value="" Placeholder="Enter Age">
+  <br>
+  <br>
+  <!-- <select name="location">
     #foreach($location in $locations)
-    <option value="$location.getId()">$location.getName()</option>
+    <option value="$location.getId()">$location.getDescription()</option>
     #end
     <option value="new-location">Add Location</option>
-  </select>
+  </select> -->
   <br>
   <br>
-  <input type="text" name="new-location-input" Placeholder="New Location" value="">
+  <label for="location">Location</label>
+  <input type="text" name="location" value="">
   <br>
   <br>
   <button type="submit" class="btn btn-success" name="button">Record Sighting</button>

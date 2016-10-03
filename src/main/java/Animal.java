@@ -39,7 +39,8 @@ public class Animal {
 
   public static List<Animal> getAllAnimals() {
     try(Connection con = DB.sql2o.open()) {
-      return con.createQuery("SELECT * FROM animals;")
+      return con.createQuery("SELECT species, id FROM animals;")
+      .throwOnMappingFailure(false)
       .executeAndFetch(Animal.class);
     }
   }
@@ -63,12 +64,12 @@ public class Animal {
     }
   }
 
-  public void addAnimalSighted(int _location_id, int _ranger_id) {
+  public static void addAnimalSighted(int _animal_id, String _location, String _ranger) {
     try(Connection con = DB.sql2o.open()) {
-      con.createQuery("INSERT INTO animal_sightings (animal_id, location_id, ranger_id) VALUES (:animal_id, :location_id, :ranger_id)")
-      .addParameter("animal_id", this.id)
-      .addParameter("location_id", _location_id)
-      .addParameter("ranger_id", _ranger_id)
+      con.createQuery("INSERT INTO sightings (animal_id, location, ranger) VALUES (:animal_id, :location, :ranger)")
+      .addParameter("animal_id", _animal_id)
+      .addParameter("location", _location)
+      .addParameter("ranger", _ranger)
       .executeUpdate();
     }
   }
@@ -83,7 +84,7 @@ public class Animal {
 
   public static List<Integer> getAnimalSightingIds() {
     try(Connection con = DB.sql2o.open()) {
-      return con.createQuery("SELECT animal_id FROM animal_sightings;")
+      return con.createQuery("SELECT animal_id FROM sightings;")
       .executeAndFetch(Integer.class);
     }
   }
@@ -104,4 +105,39 @@ public class Animal {
     return animals;
   }
 
+  public static void deleteAll() {
+    try(Connection con = DB.sql2o.open()) {
+      con.createQuery("DELETE FROM animals *")
+      .executeUpdate();
+
+      con.createQuery("DELETE FROM sightings *")
+      .executeUpdate();
+    }
+  }
+
+
+
+  public List<Integer> getSightingIds() {
+    try(Connection con = DB.sql2o.open()) {
+      return con.createQuery("SELECT id FROM sightings WHERE animal_id=:animal_id")
+      .addParameter("animal_id", this.id)
+      .executeAndFetch(Integer.class);
+    }
+  }
+
+  public String getLocation() {
+    try(Connection con = DB.sql2o.open()) {
+      return con.createQuery("SELECT location FROM sightings WHERE animal_id=:animal_id")
+      .addParameter("animal_id", this.id)
+      .executeAndFetchFirst(String.class);
+    }
+  }
+
+  public String getRanger() {
+    try(Connection con = DB.sql2o.open()) {
+      return con.createQuery("SELECT ranger FROM sightings WHERE animal_id=:animal_id")
+      .addParameter("animal_id", this.id)
+      .executeAndFetchFirst(String.class);
+    }
+  }
 }

@@ -1,1 +1,24 @@
 <a href="/sightings/new">Add a new sighting</a>
+<!-- <a href="/deleteRangers">Delete Rangers</a> -->
+<a href="/deleteAnimals">Delete Animals</a>
+<!-- <a href="/deleteLocations">Delete Locations</a> -->
+
+<ul>
+  #foreach ($animal in $animals)
+    <h3>$animal.getSpecies()</h3>
+    <p>Spotted By: $animal.getRanger()</p>
+    <p>Location: $animal.getLocation()</p>
+  #end
+</ul>
+
+<ul>
+  #foreach ($endangeredAnimal in $endangeredAnimals)
+    <h3>$animal.getSpecies()</h3>
+    <p>Endangered Animal</p>
+    <p>
+    <p>Spotted By: $animal.getRanger()</p>
+    <p>Location: $animal.getLocation()</p>
+    <p>Health: $animal.getHealth()</p>
+    <p>Age: $animal.getAge()</p>
+  #end
+</ul>

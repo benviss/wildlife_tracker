@@ -1,5 +1,7 @@
 
 import java.util.Date;
+import java.util.*;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.ArrayList;
 import org.sql2o.*;
@@ -29,7 +31,7 @@ public class Animal {
 
   public void save() {
     try(Connection con = DB.sql2o.open()) {
-      this.id = (int) con.createQuery("INSERT INTO animals (species, endangered) VALUES (:species, :endangered)", true)
+      this.id = (int) con.createQuery("INSERT INTO animals (species, endangered, seen) VALUES (:species, :endangered, now())", true)
       .addParameter("species", this.species)
       .addParameter("endangered", this.endangered)
       .executeUpdate()
@@ -140,4 +142,17 @@ public class Animal {
       .executeAndFetchFirst(String.class);
     }
   }
+
+  public Timestamp getTime() {
+    try(Connection con = DB.sql2o.open()) {
+      Timestamp timestamp = con.createQuery("SELECT seen FROM animals where id=:id")
+      .addParameter("id",this.id)
+      .executeAndFetchFirst(Timestamp.class);
+
+      return timestamp;
+    }
+
+  }
+
+
 }

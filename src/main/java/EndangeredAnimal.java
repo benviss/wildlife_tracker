@@ -41,6 +41,7 @@ public class EndangeredAnimal extends Animal{
   public static List<EndangeredAnimal> getAllEndangeredAnimals() {
     try(Connection con = DB.sql2o.open()) {
       return con.createQuery("SELECT * FROM animals WHERE endangered=:boolean;")
+      .throwOnMappingFailure(false)
       .addParameter("boolean", true)
       .executeAndFetch(EndangeredAnimal.class);
     }
@@ -49,6 +50,7 @@ public class EndangeredAnimal extends Animal{
   public static EndangeredAnimal findById(int _id) {
     try(Connection con = DB.sql2o.open()) {
       return con.createQuery("SELECT * FROM animals where id=:id")
+      .throwOnMappingFailure(false)
       .addParameter("id", _id)
       .executeAndFetchFirst(EndangeredAnimal.class);
     }

@@ -89,7 +89,6 @@ public class App {
         String errorMessage = "All Required Fields must be entered to proceed";
         model.put("errorMessage", errorMessage);
         model.put("animals",Animal.getAllAnimals());
-
       }
       Animal.addAnimalSighted(speciesId, locationName, rangerName);
       model.put("template","templates/new-sighting.vtl");

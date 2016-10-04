@@ -53,7 +53,7 @@ public class AnimalTest {
   public void addAnimalSighted_SavesAnimalSighting_true() {
     Animal newAnimal = new Animal("Deer, I give up");
     newAnimal.save();
-    Animal.addAnimalSighted(newAnimal.getId(),1,2);
+    Animal.addAnimalSighted(newAnimal.getId(),"welp","welp");
     assertTrue(Animal.getAnimalsFromAnimalIds(Animal.getAnimalSightingIds()).get(0).equals(newAnimal));
   }
 
@@ -61,7 +61,19 @@ public class AnimalTest {
   public void getSightingIds_returnsAllIds_true() {
     Animal newAnimal = new Animal("Deer, I give up");
     newAnimal.save();
-    Animal.addAnimalSighted(newAnimal.getId(),1,2);
+    Animal.addAnimalSighted(newAnimal.getId(),"welp","welp");
     assertTrue(newAnimal.getSightingIds().size() > 0);
+  }
+
+  @Test
+  public void updateSightings_updateSightingCorrectly_true() {
+    Animal newAnimal = new Animal("Deer, I give up");
+    newAnimal.save();
+    Animal.addAnimalSighted(newAnimal.getId(),"welp","welp");
+    Animal.updateSighting(newAnimal.getId(),"sam","halp");
+    assertTrue(newAnimal.getRanger().equals("sam"));
+    assertTrue(newAnimal.getLocation().equals("halp"));
+
+
   }
 }

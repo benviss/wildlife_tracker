@@ -90,6 +90,9 @@ public class App {
         if(locationName.equals("") || rangerName.equals("")) {
           throw new UnsupportedOperationException("Empty Text Field");
         }
+        if(!request.queryParams("endangered").equals("Yes") || !request.queryParams("endangered").equals("No")) {
+          throw new UnsupportedOperationException("Empty Text Field");
+        }
         if(request.queryParams("endangered").equals("Yes") && (request.queryParams("health").equals("") || request.queryParams("age").equals(""))) {
           throw new UnsupportedOperationException("Empty Text Field");
         }

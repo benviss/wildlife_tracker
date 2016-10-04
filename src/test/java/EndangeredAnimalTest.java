@@ -54,7 +54,7 @@ public class EndangeredAnimalTest {
   public void addAnimalSighted_SavesAnimalSighting_true() {
     EndangeredAnimal newEndangeredAnimal = new EndangeredAnimal("Deer, I give up", "SICK", "Young?");
     newEndangeredAnimal.save();
-    Animal.addAnimalSighted(newEndangeredAnimal.getId(),1,2);
+    Animal.addAnimalSighted(newEndangeredAnimal.getId(),"welp","welp");
     assertTrue(EndangeredAnimal.getEndangeredAnimalsFromAnimalIds(Animal.getAnimalSightingIds()).get(0).equals(newEndangeredAnimal));
   }
 }

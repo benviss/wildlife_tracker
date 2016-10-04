@@ -1,22 +1,21 @@
 <h3>$animal.getSpecies()</h3>
-
-<h4>Has been seen at the following locations: </h4>
-
-#if($animal.getEndangeredBoolean())
-
-  #foreach($sighting in $sightings)
-  <h5>Spotted by: $Ranger.findById($Ranger.getRangerId($sighting)).getRangerName()</h5>
-  <ul>
-    <li>Spotted near: $Location.findById($Location.getLocationId($sighting)).getLocation()</li>
-    <li>Estimated Age: $animal.getAge()</li>
-    <li>Health: $animal.getHealth()</li>
-  </ul>
-  #end
-#else
-  #foreach($sighting in $sightings)
-  <h5>Spotted by: $Ranger.findById($Ranger.getRangerId($sighting)).getRangerName()</h5>
-  <ul>
-    <li>Spotted near: $Location.findById($Location.getLocationId($sighting)).getLocation()</li>
-  </ul>
-  #end
+#if($errorMessage)
+<h5>***$errorMessage***</h5>
 #end
+<a href="/">Home</a>
+<form action="/animal/$animal.getId()/update" method="post">
+  <br>
+  <br>
+  <label for="ranger">Ranger Name: </label>
+  <input type="text" name="ranger" value="">
+  <br>
+  <br>
+  <input type="text" name="species" Placeholder="New Species" value="$animal.getSpecies()" readonly>
+  <br>
+  <br>
+  <label for="location">Location</label>
+  <input type="text" name="location" value="">
+  <br>
+  <br>
+  <button type="submit" class="btn btn-success" name="button">Update Sighting</button>
+</form>

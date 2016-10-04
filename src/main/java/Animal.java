@@ -56,6 +56,14 @@ public class Animal {
     }
   }
 
+  public static boolean checkAnimalEndagered(int _id) {
+    try(Connection con = DB.sql2o.open()) {
+      return con.createQuery("SELECT endangered FROM animals where id=:id")
+      .addParameter("id", _id)
+      .executeAndFetchFirst(Boolean.class);
+    }
+  }
+
   @Override
   public boolean equals(Object testObj) {
     if(!(testObj instanceof Animal)) {
@@ -151,7 +159,16 @@ public class Animal {
 
       return timestamp;
     }
+  }
 
+  public static void updateSighting(int animal_id, String newRangerName, String newLocationDescription) {
+    try(Connection con = DB.sql2o.open()) {
+      con.createQuery("UPDATE sightings SET (ranger, location) = (:rangerName, :location) WHERE animal_id=:id")
+      .addParameter("rangerName", newRangerName)
+      .addParameter("location", newLocationDescription)
+      .addParameter("id", animal_id)
+      .executeUpdate();
+    }
   }
 
 

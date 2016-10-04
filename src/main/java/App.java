@@ -21,13 +21,33 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
-    // get("/animal/:id", (request, response) -> {
-    //   Map<String, Object> model = new HashMap<String, Object>();
-    //   model.put("animal",Animal.findById(Integer.parseInt(request.params(":id"))));
-    //   model.put("Ranger",Ranger.class);
-    //   model.put("Location",Location.class);
-    //   return new ModelAndView(model, layout);
-    // }, new VelocityTemplateEngine());
+    get("/animal/:id", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      model.put("animal",Animal.findById(Integer.parseInt(request.params(":id"))));
+      model.put("animals", Animal.getAllAnimals());
+      model.put("template", "templates/animal.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/animal/:id/update", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      String rangerName = request.queryParams("ranger");
+      String locationName = request.queryParams("location");
+      int speciesId = Integer.parseInt(request.params(":id"));
+      String speciesName = request.queryParams("new-species-input");
+      try{
+        if(locationName.equals("") || rangerName.equals("")) {
+          throw new UnsupportedOperationException("Empty Text Field");
+        }
+      } catch (java.lang.UnsupportedOperationException e) {
+        String errorMessage = "All Required Fields must be entered to proceed";
+        model.put("errorMessage", errorMessage);
+        model.put("animals",Animal.getAllAnimals());
+      }
+      Animal.updateSighting(speciesId, rangerName, locationName);
+      response.redirect("/");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
 
 
     get("/sightings/new", (request, response) -> {
@@ -78,6 +98,12 @@ public class App {
         }
         if (request.queryParams("species").equals("new-species")) {
           Animal newAnimal = new Animal(speciesName);
+          newAnimal.save();
+          speciesId = newAnimal.getId();
+        } else if (request.queryParams("endangered").equals("Yes")) {
+          String health = request.queryParams("health");
+          String age = request.queryParams("age");
+          EndangeredAnimal newAnimal = new EndangeredAnimal(request.queryParams("species"),health,age);
           newAnimal.save();
           speciesId = newAnimal.getId();
         } else {

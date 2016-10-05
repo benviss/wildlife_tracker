@@ -21,17 +21,10 @@ public class AnimalTest {
   }
 
   @Test
-  public void getEndageredBoolean_EndangeredShouldInstantiateAsFalse_False() {
-    Animal newAnimal = new Animal("Led Zeppelin; an eagle probably");
-    newAnimal.save();
-    assertFalse(newAnimal.getEndangeredBoolean());
-  }
-
-  @Test
   public void getAllAnimals_returnsAllAnimalsCorrectly_true() {
     Animal newAnimal = new Animal("White Stripes; definitely elephants");
     newAnimal.save();
-    assertTrue(Animal.getAllAnimals().size() > 0);
+    assertTrue(Animal.all().size() > 0);
   }
 
   @Test
@@ -41,39 +34,5 @@ public class AnimalTest {
     assertTrue(Animal.findById(newAnimal.getId()).equals(newAnimal));
   }
 
-  @Test
-  public void getAnimalIds_ReturnsAllUnEndangeredAnimals_true() {
-    Animal newAnimal = new Animal("Deer, I give up");
-    newAnimal.save();
 
-    assertTrue(Animal.getAnimalByEndangeredBoolean(false).get(0).equals(newAnimal));
-  }
-
-  @Test
-  public void addAnimalSighted_SavesAnimalSighting_true() {
-    Animal newAnimal = new Animal("Deer, I give up");
-    newAnimal.save();
-    Animal.addAnimalSighted(newAnimal.getId(),"welp","welp");
-    assertTrue(Animal.getAnimalsFromAnimalIds(Animal.getAnimalSightingIds()).get(0).equals(newAnimal));
-  }
-
-  @Test
-  public void getSightingIds_returnsAllIds_true() {
-    Animal newAnimal = new Animal("Deer, I give up");
-    newAnimal.save();
-    Animal.addAnimalSighted(newAnimal.getId(),"welp","welp");
-    assertTrue(newAnimal.getSightingIds().size() > 0);
-  }
-
-  @Test
-  public void updateSightings_updateSightingCorrectly_true() {
-    Animal newAnimal = new Animal("Deer, I give up");
-    newAnimal.save();
-    Animal.addAnimalSighted(newAnimal.getId(),"welp","welp");
-    Animal.updateSighting(newAnimal.getId(),"sam","halp");
-    assertTrue(newAnimal.getRanger().equals("sam"));
-    assertTrue(newAnimal.getLocation().equals("halp"));
-
-
-  }
 }

@@ -1,16 +1,12 @@
-<h3>$animal.getSpecies()</h3>
 #if($errorMessage)
 <h5>***$errorMessage***</h5>
 #end
 <a href="/">Home</a>
-<form action="/animal/$animal.getId()/update" method="post">
+<form action="/sighting/$sighting.getId()/update" method="post">
   <br>
   <br>
   <label for="ranger">Ranger Name: </label>
   <input type="text" name="ranger" value="">
-  <br>
-  <br>
-  <input type="text" name="species" Placeholder="New Species" value="$animal.getSpecies()" readonly>
   <br>
   <br>
   <label for="location">Location</label>
@@ -19,3 +15,5 @@
   <br>
   <button type="submit" class="btn btn-success" name="button">Update Sighting</button>
 </form>
+
+<a href="/delete/$sighting.getId()">Delete Entry</a>

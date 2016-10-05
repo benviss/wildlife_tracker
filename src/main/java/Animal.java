@@ -11,7 +11,7 @@ public class Animal {
 
   public int id;
   public String species;
-  public boolean endangered = false;
+
 
   public Animal(String _species) {
     this.species = _species;
@@ -25,23 +25,18 @@ public class Animal {
     return this.species;
   }
 
-  public boolean getEndangeredBoolean() {
-    return this.endangered;
-  }
-
   public void save() {
     try(Connection con = DB.sql2o.open()) {
-      this.id = (int) con.createQuery("INSERT INTO animals (species, endangered, seen) VALUES (:species, :endangered, now())", true)
+      this.id = (int) con.createQuery("INSERT INTO animals (species) VALUES (:species)", true)
       .addParameter("species", this.species)
-      .addParameter("endangered", this.endangered)
       .executeUpdate()
       .getKey();
     }
   }
 
-  public static List<Animal> getAllAnimals() {
+  public static List<Animal> all() {
     try(Connection con = DB.sql2o.open()) {
-      return con.createQuery("SELECT species, id FROM animals;")
+      return con.createQuery("SELECT species, id FROM animals WHERE endangered IS NULL;")
       .throwOnMappingFailure(false)
       .executeAndFetch(Animal.class);
     }
@@ -56,14 +51,6 @@ public class Animal {
     }
   }
 
-  public static boolean checkAnimalEndagered(int _id) {
-    try(Connection con = DB.sql2o.open()) {
-      return con.createQuery("SELECT endangered FROM animals where id=:id")
-      .addParameter("id", _id)
-      .executeAndFetchFirst(Boolean.class);
-    }
-  }
-
   @Override
   public boolean equals(Object testObj) {
     if(!(testObj instanceof Animal)) {
@@ -71,24 +58,6 @@ public class Animal {
     } else {
       Animal animal = (Animal) testObj;
       return this.id == animal.getId() && this.species.equals(animal.getSpecies());
-    }
-  }
-
-  public static void addAnimalSighted(int _animal_id, String _location, String _ranger) {
-    try(Connection con = DB.sql2o.open()) {
-      con.createQuery("INSERT INTO sightings (animal_id, location, ranger) VALUES (:animal_id, :location, :ranger)")
-      .addParameter("animal_id", _animal_id)
-      .addParameter("location", _location)
-      .addParameter("ranger", _ranger)
-      .executeUpdate();
-    }
-  }
-
-  public static List<Animal> getAnimalByEndangeredBoolean(boolean _endangeredBool) {
-    try(Connection con = DB.sql2o.open()) {
-      return con.createQuery("SELECT * FROM animals WHERE endangered=:endangered")
-      .addParameter("endangered",_endangeredBool)
-      .executeAndFetch(Animal.class);
     }
   }
 
@@ -119,9 +88,6 @@ public class Animal {
     try(Connection con = DB.sql2o.open()) {
       con.createQuery("DELETE FROM animals *")
       .executeUpdate();
-
-      con.createQuery("DELETE FROM sightings *")
-      .executeUpdate();
     }
   }
 
@@ -134,42 +100,4 @@ public class Animal {
       .executeAndFetch(Integer.class);
     }
   }
-
-  public String getLocation() {
-    try(Connection con = DB.sql2o.open()) {
-      return con.createQuery("SELECT location FROM sightings WHERE animal_id=:animal_id")
-      .addParameter("animal_id", this.id)
-      .executeAndFetchFirst(String.class);
-    }
-  }
-
-  public String getRanger() {
-    try(Connection con = DB.sql2o.open()) {
-      return con.createQuery("SELECT ranger FROM sightings WHERE animal_id=:animal_id")
-      .addParameter("animal_id", this.id)
-      .executeAndFetchFirst(String.class);
-    }
-  }
-
-  public Timestamp getTime() {
-    try(Connection con = DB.sql2o.open()) {
-      Timestamp timestamp = con.createQuery("SELECT seen FROM animals where id=:id")
-      .addParameter("id",this.id)
-      .executeAndFetchFirst(Timestamp.class);
-
-      return timestamp;
-    }
-  }
-
-  public static void updateSighting(int animal_id, String newRangerName, String newLocationDescription) {
-    try(Connection con = DB.sql2o.open()) {
-      con.createQuery("UPDATE sightings SET (ranger, location) = (:rangerName, :location) WHERE animal_id=:id")
-      .addParameter("rangerName", newRangerName)
-      .addParameter("location", newLocationDescription)
-      .addParameter("id", animal_id)
-      .executeUpdate();
-    }
-  }
-
-
 }

@@ -7,14 +7,14 @@ import org.sql2o.*;
 
 public class EndangeredAnimal extends Animal{
 
-  private final String health;
-  private final String age;
+  private String health;
+  private String age;
+  private static final boolean endangered = true;
 
   public EndangeredAnimal(String _species, String _health, String _age) {
     super(_species);
     this.health = _health;
     this.age = _age;
-    this.endangered = true;
   }
 
   public String getHealth() {
@@ -25,6 +25,9 @@ public class EndangeredAnimal extends Animal{
     return this.age;
   }
 
+  public boolean getEndangered() {
+    return endangered;
+  }
   @Override
   public void save() {
     try(Connection con = DB.sql2o.open()) {
@@ -38,7 +41,7 @@ public class EndangeredAnimal extends Animal{
     }
   }
 
-  public static List<EndangeredAnimal> getAllEndangeredAnimals() {
+  public static List<EndangeredAnimal> allEndangered() {
     try(Connection con = DB.sql2o.open()) {
       return con.createQuery("SELECT * FROM animals WHERE endangered=:boolean;")
       .throwOnMappingFailure(false)

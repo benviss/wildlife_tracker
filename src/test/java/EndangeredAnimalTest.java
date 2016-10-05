@@ -14,11 +14,11 @@ public class EndangeredAnimalTest {
   }
 
   @Test
-  public void getEndageredBoolean_EndangeredShouldInstantiateAsTrue_True() {
+  public void getEndagered_EndangeredShouldInstantiateAsTrue_True() {
     EndangeredAnimal newEndangeredAnimal = new EndangeredAnimal("Led Zeppelin; an eagle probably", "Sick", "Young?");
     newEndangeredAnimal.save();
-    System.out.println(newEndangeredAnimal.getEndangeredBoolean());
-    assertTrue(newEndangeredAnimal.getEndangeredBoolean());
+    System.out.println(newEndangeredAnimal.getEndangered());
+    assertTrue(newEndangeredAnimal.getEndangered());
   }
 
   @Test
@@ -32,7 +32,7 @@ public class EndangeredAnimalTest {
   public void getAllEndangeredAnimals_returnsAllEndangeredAnimalsCorrectly_true() {
     EndangeredAnimal newEndangeredAnimal = new EndangeredAnimal("White Stripes; definitely elephants", "Sick", "Young?");
     newEndangeredAnimal.save();
-    assertTrue(EndangeredAnimal.getAllEndangeredAnimals().size() > 0);
+    assertTrue(EndangeredAnimal.allEndangered().size() > 0);
   }
 
   @Test
@@ -43,18 +43,9 @@ public class EndangeredAnimalTest {
   }
 
   @Test
-  public void getAnimalIds_ReturnsAllEndangeredAnimals_true() {
-    EndangeredAnimal newEndangeredAnimal = new EndangeredAnimal("Deer, I give up","Sick","Young?");
+  public void findById_FindsCorrectEndangdAnimal_true() {
+    EndangeredAnimal newEndangeredAnimal = new EndangeredAnimal("Deer, I give up", "Sick", "Young?");
     newEndangeredAnimal.save();
-
-    assertTrue(Animal.getAnimalByEndangeredBoolean(true).get(0).equals(newEndangeredAnimal));
-  }
-
-  @Test
-  public void addAnimalSighted_SavesAnimalSighting_true() {
-    EndangeredAnimal newEndangeredAnimal = new EndangeredAnimal("Deer, I give up", "SICK", "Young?");
-    newEndangeredAnimal.save();
-    Animal.addAnimalSighted(newEndangeredAnimal.getId(),"welp","welp");
-    assertTrue(EndangeredAnimal.getEndangeredAnimalsFromAnimalIds(Animal.getAnimalSightingIds()).get(0).equals(newEndangeredAnimal));
+    assertTrue(EndangeredAnimal.findById(newEndangeredAnimal.getId()).getHealth().equals("Sick"));
   }
 }

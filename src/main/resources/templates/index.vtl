@@ -7,12 +7,10 @@
   #foreach ($animalsighting in $sightings)
   #if($animalsighting.getEndangered().equals("Endangered"))
     <h3><a href="/sighting/$animalsighting.getId()">$EndangeredAnimal.findById($animalsighting.getAnimalId()).getSpecies()</a></h3>
-    <p>Endangered Animal</p>
-    <p>$animalsighting.getId()</p>
     <p>Spotted By: $animalsighting.getRanger()</p>
     <p>Location: $animalsighting.getLocation()</p>
-    <p>Health: $EndangeredAnimal.findById($animalsighting.getAnimalId()).getHealth()</p>
-    <p>Age: $EndangeredAnimal.findById($animalsighting.getAnimalId()).getAge()</p>
+    <p>Health: $animalsighting.getHealthofId()</p>
+    <p>Age: $animalsighting.getAgeofId()</p>
     <p> Seen:$animalsighting.getSeen()</p>
 
   #else

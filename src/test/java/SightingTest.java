@@ -63,5 +63,25 @@ public class SightingTest {
     assertTrue(test > test2);
   }
 
+  @Test
+  public void getHealthofId_returnshealthofanimal_true() {
+    EndangeredAnimal newAnimal = new EndangeredAnimal("Deer","healthy","Young");
+    newAnimal.save();
+    System.out.println(newAnimal.getHealth());
+    Sighting newSighting = new Sighting("Creek","Rick", newAnimal.getId(), "Endangered");
+    newSighting.save();
+    System.out.println(newSighting.getHealthofId());
+    assertEquals(newSighting.getHealthofId(),"healthy");
+  }
+
+  @Test
+  public void getageofId_returnshealthofanimal_true() {
+    EndangeredAnimal newAnimal = new EndangeredAnimal("Deer","healthy","Young");
+    newAnimal.save();
+    Sighting newSighting = new Sighting("Creek","Rick", newAnimal.getId(), "Endangered");
+    newSighting.save();
+    assertTrue(newSighting.getAgeofId().equals("Young"));
+  }
+
 
 }

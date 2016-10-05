@@ -121,4 +121,19 @@ public class Sighting {
     }
   }
 
+  public String getHealthofId() {
+      try(Connection con = DB.sql2o.open()) {
+      return con.createQuery("SELECT health FROM animals where id=:id")
+        .addParameter("id", this.animal_id)
+        .executeAndFetchFirst(String.class);
+      }
+  }
+
+  public String getAgeofId() {
+      try(Connection con = DB.sql2o.open()) {
+        return con.createQuery("SELECT age FROM animals where id=:id")
+        .addParameter("id", this.animal_id)
+        .executeAndFetchFirst(String.class);
+      }
+  }
 }
